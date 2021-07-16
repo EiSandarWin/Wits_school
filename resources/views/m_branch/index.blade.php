@@ -6,11 +6,11 @@
         <div class="row">
             <div class="col-lg-12 margin-tb">
                 <div class="pull-left">
-                    <h2>Branches</h2>
+                    <h2>教室</h2>　{{--Branches--}}
                 </div>
                 <div class="pull-right">
                     @can('m_branch-create')
-                    <a class="btn btn-success" href="{{ route('m_branch.create') }}"> Create New Branch</a>
+                    <a class="btn btn-success" href="{{ route('m_branch.create') }}"> 新規追加</a>　{{--Create New Branch--}}
                     @endcan
                 </div>
             </div>
@@ -28,9 +28,9 @@
             <thead class="theadarea">
             <tr>
                 <th>No</th>
-                <th>Name</th>
+                <th>氏名</th>　{{--Name--}}
 
-                <th width="280px">Action</th>
+                <th width="280px">操作</th>　{{--Action--}}
             </tr>
             </thead>
             @foreach ($m_branches as $m_branch)
@@ -40,16 +40,16 @@
 
                 <td>
                     <form action="{{ route('m_branch.destroy',$m_branch->id) }}" method="POST">
-                        <a class="btn btn-info" href="{{ route('m_branch.show',$m_branch->id) }}">Show</a>
+                        <a class="btn btn-info" href="{{ route('m_branch.show',$m_branch->id) }}">表示</a>　{{--Show--}}
                         @can('m_branch-edit')
-                        <a class="btn btn-primary" href="{{ route('m_branch.edit',$m_branch->id) }}">Edit</a>
+                        <a class="btn btn-primary" href="{{ route('m_branch.edit',$m_branch->id) }}">編集</a>　{{--Edit--}}
                         @endcan
 
 
                         @csrf
                         @method('DELETE')
                         @can('m_branch-delete')
-                        <button type="submit" class="btn btn-danger" onclick = "return confirm('Are you sure want to delete?')">Delete</button>
+                        <button type="submit" class="btn btn-danger" onclick = "return confirm('削除してよろしいですか')">削除</button>　{{--Delete--}}
                         @endcan
                     </form>
                 </td>

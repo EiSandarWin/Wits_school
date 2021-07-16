@@ -5,10 +5,10 @@
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>Create New Role</h2>
+            <h2>新規追加</h2> {{--Name--}}
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
+                <a class="btn btn-primary" href="{{ route('roles.index') }}"> 戻る</a>　{{--Name--}}
         </div>
     </div>
 </div>
@@ -30,13 +30,13 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Name:</strong>
+            <strong>氏名:</strong>　{{--Name--}}
             {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Permission:</strong>
+            <strong>詳細な権限:</strong>　{{--Permission--}}
             <br/>
             @foreach($permission as $value)
                 <label>{{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
@@ -46,11 +46,11 @@
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">登録</button>　{{--submit--}}
     </div>
 </div>
 {!! Form::close() !!}
 
 
-<p class="text-center text-primary"><small>Tutorial by ItSolutionStuff.com</small></p>
+<p class="text-center text-primary"><small>Wits.com</small></p>
 @endsection

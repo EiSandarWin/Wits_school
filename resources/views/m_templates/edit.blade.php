@@ -5,10 +5,10 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2>Edit Template</h2>
+                <h2>編集 確認事項</h2> {{--Edit Template--}}
             </div>
             <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('m_templates.index') }}"> Back</a>
+                <a class="btn btn-primary" href="{{ route('m_templates.index') }}"> 戻る</a> {{--back--}}
             </div>
         </div>
     </div>
@@ -34,13 +34,13 @@
          <div class="row">
 		    <div class="col-xs-12 col-sm-12 col-md-12">
 		        <div class="form-group">
-		            <strong>Name:</strong>
-		            <input type="text" name="name" value="{{ $m_template->name }}" class="form-control" placeholder="Name">
+		            <strong>氏名:</strong>
+		            <input type="text" name="name" value="{{ $m_template->name }}" class="form-control" placeholder="確認事項"> {{--template--}}
 		        </div>
 		    </div>
-		    
+
 		    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-		      <button type="submit" class="btn btn-primary">Submit</button>
+		      <button type="submit" class="btn btn-primary">登録</button> {{--submit--}}
 		    </div>
 		</div>
 
@@ -48,5 +48,5 @@
     </form>
 
 
-<p class="text-center text-primary"><small>Tutorial by ItSolutionStuff.com</small></p>
+<p class="text-center text-primary"><small>Wits.com</small></p>
 @endsection

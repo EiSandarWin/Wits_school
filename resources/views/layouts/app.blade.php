@@ -129,11 +129,11 @@ dd {
                             <li><a class="nav-link text-white " href="{{ route('login') }}">{{ __('ログイン') }}</a></li>
                             <li><a class="nav-link text-white" href="{{ route('register') }}">{{ __('登録') }}</a></li>
                         @else
-                            <li><a class="nav-link text-white" href="{{ route('m_branch.index') }}">Manage Branches</a></li>
-                            <li><a class="nav-link text-white" href="{{ route('users.index') }}">Manage Users</a></li>
-                            <li><a class="nav-link text-white" href="{{ route('roles.index') }}">Manage Role</a></li>
-                            <li><a class="nav-link text-white" href="{{ route('m_templates.index') }}">Manage Template </a></li>
-                            <li><a class="nav-link text-white" href="{{ route('m_template_details.index') }}">Manage Template Detail</a></li>
+                            <li><a class="nav-link text-white" href="{{ route('m_branch.index') }}">教室</a></li>
+                            <li><a class="nav-link text-white" href="{{ route('users.index') }}">スタッフ</a></li>
+                            <li><a class="nav-link text-white" href="{{ route('roles.index') }}">権限</a></li>
+                            <li><a class="nav-link text-white" href="{{ route('m_templates.index') }}">確認事項 </a></li>
+                            <li><a class="nav-link text-white" href="{{ route('m_template_details.index') }}">確認項目</a></li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>

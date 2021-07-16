@@ -61,8 +61,9 @@ class RegisterController extends Controller
             'name_kana' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'branch_id' => 'required',
-        ]) ->with(compact('branches',$branches));
+            'branch_id' => ['required', 'string'],
+        ])
+        ->with(compact('branches'));
     }
 
     /**
@@ -83,8 +84,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'branch_id' => $data['branch_id'],
         ])
-        ->with(compact('branches',$branches));
-
+        ->with(compact('branches'));
 
     }
 

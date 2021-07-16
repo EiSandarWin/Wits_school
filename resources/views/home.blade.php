@@ -7,9 +7,19 @@
         <form method="POST" action="{{ route('search.route') }}" class="searchbox" role="search">
             {{csrf_field()}}
 
-            <input type="text" name="search" class="search" id="search" placeholder="氏名（カナ）">
-            <input type="submit" name="submit" class="submit" value="検索" >
+            <input type="text" name="search" class="search"  placeholder="氏名 ,氏名（カナ）,保護者氏名">
+            <select class="search" id = "searchselect" name="searchselect" style="">
+                <option selected disabled>教室を選んでください</option>
+                @foreach($branches as $branch)
+                    <option value="{{$branch->id}}">{{$branch->name}}</option>
+                @endforeach
+                </select>
 
+            <input type="submit" name="submit" class="submit" value="検索" >
+            <button type="submit" class="btn btn-success">
+                Print
+            </button>
+            <!--<button class="btn btn-primary" style="height: 37px;"><i class="fa fa-search" aria-hidden="true"></i> </button>-->
 
             <!--<div class="col-sm-3">
                 {{ Form::date('start_date',null,['class'=>'form-control','placeholder'=>'Date']) }}

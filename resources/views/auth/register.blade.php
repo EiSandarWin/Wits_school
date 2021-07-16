@@ -78,9 +78,9 @@
                         <div class="form-group row">
                             <label for="fileInput" class="col-md-4 col-form-label text-md-right"> Branch Name</label>
                             <select class="form-control" name="branch_id">
-                            @foreach($branches as $branch)
-                            <option value="{{$branch->id}}">{{$branch->name}}</option>
-                            @endforeach
+                                @foreach($branches as $branch)
+                                    <option value="{{$branch->id}}">{{$branch->name}}</option>
+                                @endforeach
                             </select>
                         </div>
 

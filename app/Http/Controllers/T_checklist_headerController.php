@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\T_checklist_details;
 use DateTime;
+use view;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 
@@ -145,22 +147,79 @@ class T_checklist_headerController extends Controller
     }
 
     public function search(Request $request){
-        $search = $request->search;
-        $branches = M_branch::all();
+
         $t_checklist_header =T_checklist_header::all();
-        $searchdata=T_checklist_header::where('student_name_kana','LIKE','%' .$search. '%')
-                                        ->orwhere('student_name', 'LIKE' , '%' .$search. '%')
-                                        ->orwhere('parent_name', 'LIKE', '%' .$search. '%')
-                                        ->orwhere('user_name', 'LIKE', '%' .$search. '%')
+        $branches = M_branch::all();
+        $search = $request->search;
+        $searchselect = $request->searchselect;
 
-                                        ->get();
 
-        //dd($searchdata);
+
+//        if(is_null($request->search) ){
+//            return view('/home',compact('searchdata','branches','t_checklist_header'));
+//        }
+//
+//        else {
+//            if (!is_null($request->search) && !is_null($request->searchselect)) {
+//                $searchdata = T_checklist_header::where('student_name_kana', 'LIKE', '%' .$request->search . '%')
+//                    ->orwhere('student_name', 'LIKE', '%' . $request->search . '%')
+//                    ->orwhere('parent_name', 'LIKE', '%' . $request->search. '%')
+//                    ->where('branch_id', 'LIKE', $request->searchselect)
+//                    ->get();
+//            }
+//            if (is_null($request->search) && !is_null($request->searchselect)) {
+//                $searchdata = T_checklist_header::where('branch_id', 'LIKE', $request->searchselect)
+//                    ->get();
+//            }
+//        }
+        if(is_null($request->search) && is_null($request->searchselect)){
+            $searchdata= T_checklist_header::all();
+            return view('/home',compact('searchdata','branches', 't_checklist_header'));
+
+        }
+
+        else {
+
+            if (!is_null($request->search)){
+                $searchdata = T_checklist_header::where('student_name_kana', 'LIKE', '%' . $search . '%')
+                    ->orwhere('student_name', 'LIKE', '%' . $search . '%')
+                    ->orwhere('parent_name', 'LIKE', '%' . $search . '%')
+                    ->get();
+            }
+
+            if (!is_null($request->search) && !is_null($request->searchselect)){
+                $searchdata = T_checklist_header::where('student_name_kana', 'LIKE', '%' . $search . '%')
+                    ->orwhere('student_name', 'LIKE', '%' . $search . '%')
+                    ->orwhere('parent_name', 'LIKE', '%' . $search . '%')
+                    ->get();
+            }
+
+
+            if (!is_null($request->searchselect)) {
+                $searchdata = T_checklist_header::where('branch_id', 'LIKE', $request->searchselect)
+                    ->get();
+            }
+
+
+        }
+
+
+//
+//        $searchdata=T_checklist_header::where('student_name_kana','LIKE','%' .$search. '%')
+//                                        ->orwhere('student_name', 'LIKE' , '%' .$search. '%')
+//                                        ->orwhere('parent_name', 'LIKE', '%' .$search. '%')
+//                                        ->orwhere(function($searchselect){
+//                                              T_checklist_header::where('branch_id', $searchselect);
+//                                          })
+//                                        ->get();
+
+        //dd($request);
 
 
 
 
         return view('/home',compact('searchdata','branches','t_checklist_header'));
+
 
 
 
