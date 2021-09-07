@@ -29,6 +29,8 @@ Route::resource('/transaction','T_checklist_headerController');
 
 Route::post('/checklist','T_checklist_headerController@checkListTemplate');
 
+//Report
+Route::get('/report','T_checklist_headerController@checklistExport')->name('export');
 
 //admin
 Route::group(['middleware' => ['auth']], function() {
@@ -40,9 +42,11 @@ Route::group(['middleware' => ['auth']], function() {
 
     Route::resource('m_branch','M_branchController');
     Route::get('detail/{id}','T_checklist_headerController@show')->name('detail');
-    Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/home','T_checklist_headerController@searchlist');
-    Route::post('/home', 'T_checklist_headerController@search')->name('search.route');
+    //Route::get('/home', 'HomeController@index')->name('home');
+    //Route::get('/home','T_checklist_headerController@searchlist');
+    Route::get('/home', 'T_checklist_headerController@search')->name('search.route');
+
+
 });
 
 //

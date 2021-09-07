@@ -2,39 +2,45 @@
 
 @section('content')
 
-@php
-    $r_search = request()->search === null? '' : request()->search;
-    $r_searchselect = request()->searchselect === null? '' : request()->searchselect;
-if(old()){
-        $r_search = old('search');
-        $r_searchselect = old('searchselect');
-    }
-@endphp
+    @php
+        $r_search = request()->search === null? '' : request()->search;
+        $r_searchselect = request()->searchselect === null? '' : request()->searchselect;
+    if(old()){
+            $r_search = old('search');
+            $r_searchselect = old('searchselect');
+        }
+    @endphp
 
 <div class="container">
     <div class="confirmarea">
 
-        <form method="GET" action="{{ route('search.route') }}" class="searchbox" role="search">
-            {{--{{csrf_field()}}--}}
+        <form method="POST" action="{{ route('search.route') }}" class="searchbox" role="search">
+            {{csrf_field()}}
+
             <input type="text" name="search" class="search"  placeholder="氏名 ,氏名（カナ）,保護者氏名" value="{{$r_search}}">
             <select class="search" id = "searchselect" name="searchselect" style="">
                 <option selected disabled>教室を選んでください</option>
                 @foreach($branches as $branch)
                     <option value="{{$branch->id}}">{{$branch->name}}</option>
                 @endforeach
-            </select>
+                </select>
 
             <input type="submit" name="submit" class="submit" value="検索" >
 
-        </form>
+{{--            <button type="submit" class="btn btn-success" style="margin-left: auto">--}}
+{{--                Print--}}
+{{--            </button>--}}
 
-        <form action="{{route('export')}}" method="get">
-            <input type="hidden" name="search" value="{{$r_search}}">
-            <input type="hidden" name="searchselect" value="{{$r_searchselect}}">
-            <button type="submit" class="btn btn-success">
-               印刷
-            </button>
-        </form>
+            <form action="{{route('export')}}" method="get">
+                <input type="hidden" name="search" value="{{$r_search}}">
+                <input type="hidden" name="searchselect" value="{{$r_searchselect}}">
+                <button type="submit" class="btn btn-success"> Print </button>
+            </form>
+
+            <!--<a href="{{route('export')}}">Print</a>-->
+
+
+            <!--<button class="btn btn-primary" style="height: 37px;"><i class="fa fa-search" aria-hidden="true"></i> </button>-->
 
             <!--<div class="col-sm-3">
                 {{ Form::date('start_date',null,['class'=>'form-control','placeholder'=>'Date']) }}
@@ -43,6 +49,7 @@ if(old()){
                 {{ Form::date('end_date',null,['class'=>'form-control','placeholder'=>'Date']) }}
             </div>
             -->
+        <hr style="border: 1px solid lightblue;">
 
         <div class="templatearea"></div>
 
@@ -86,7 +93,7 @@ if(old()){
 
 
         </table>
-
+            </form>
             <!--<div class="card-body">
               @if (session('status'))
                     <div class="alert alert-success" role="alert">

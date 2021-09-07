@@ -106,53 +106,80 @@
                             <canvas id="signature-pad" class="signature-pad" width=500 height=200  ></canvas>
                         </div>
                         <input type="hidden" name="signature" id="signature"><br>
-                        <button type="button" class="btn btn-primary" id="clear">アクション</button></dd>
-                    <div role="tabpanel">
-                        <ul class="nav nav-tabs" role="tablist"></ul>
+                        <button type="button" class="btn btn-primary" id="clear">アクション</button>
+
+
+                    <button class="tablink" onclick="openPage('Next')">Next</button></dd>
+
                     </div>
 
-
-
-
-                        <dt><label for="user_name" >{{  __('スタッフ名')}}</label></dt>
-                        <dd><input id="user_name" type="text" name="user_name" placeholder="スタッフ名"></dd>
-
-                        @error('user_name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-
-
-
-                    <dt><label for="signature" >{{  __('サイン（スタッフ）')}}</label></dt>
-
-                    <dd><div class="wrapper">
-                        <canvas id="signature-pad1" class="signature-pad" width=500 height=200 ></canvas>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
-                <input type="hidden" name="signature1" id="signature1">
+                @endif
+                <div class="container">
 
-                        <button type="button" class="btn btn-primary" id="clear1">アクション</button></dd>
+                    <div class="confirmarea">
+
+                        <form action="{{ route('transaction.store') }}" id="signature_form" method="POST">
+
+
+                            <div class="signarea">
 
 
 
 
-                    <dt><label for="fileInput" > 教室名</label></dt>
 
-                        <dd><select  name="branch_id">
-                        @foreach($branches as $branch)
-                        <option value="{{$branch->id}}">{{$branch->name}}</option>
-                        @endforeach
-                        </select></dd>
 
-                    <div class="clr"> </div>
+                                <div id ="user_name" class="tab-content" >
 
+
+
+                                    <dt><label for="user_name" >{{  __('スタッフ名')}}</label></dt>
+                                    <dd><input id="user_name" type="text" name="user_name" placeholder="スタッフ名"></dd>
+
+                                    @error('user_name')
+                                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                                    @enderror
+
+
+
+                                    <dt><label for="signature" >{{  __('サイン（スタッフ）')}}</label></dt>
+
+                                    <dd><div class="wrapper">
+                                            <canvas id="signature-pad1" class="signature-pad" width=500 height=200 ></canvas>
+                                        </div>
+                                        <input type="hidden" name="signature1" id="signature1">
+
+                                        <button type="button" class="btn btn-primary" id="clear1">アクション</button></dd>
+
+
+
+
+                                    <dt><label for="fileInput" > 教室名</label></dt>
+
+                                    <dd><select  name="branch_id">
+                                            @foreach($branches as $branch)
+                                                <option value="{{$branch->id}}">{{$branch->name}}</option>
+                                            @endforeach
+                                        </select></dd>
+
+                                    <div class="clr"> </div>
+                                </div>
+
+                        </form>
 
             </form>
-                    <div class="btnarea">
-                        <button type="button" class="btn btn-primary" id="save">保存</button>
-                    </div>
 
+            </div>
 
             <script type="text/javascript">
 
@@ -176,13 +203,13 @@
                     // var dataURL = canvas.toDataURL();
                     // data = signaturePad.toDataURL('image/png');
                     const signature =  signaturePad.toDataURL("data:image/png;base64,signature");
-                    //const signature1 =  signaturePad1.toDataURL("data:image/png;base64,signature1");
+                    const signature1 =  signaturePad1.toDataURL("data:image/png;base64,signature1");
 
 
 // Send data to server instead...
                    // window.open(data);
                     $("#signature").val(signature)
-                    //$("#signature1").val(signature1)
+                    $("#signature1").val(signature1)
                     // $("#table_checklist input:checked").each(function (item) {
                     //     console.log($(this).val())
                     // })
@@ -195,9 +222,9 @@
                     signaturePad.clear();
                 });
 
-                // cancelButton1.addEventListener('click', function (event) {
-                //     signaturePad1.clear();
-                // });
+                cancelButton1.addEventListener('click', function (event) {
+                    signaturePad1.clear();
+                });
 
 
 

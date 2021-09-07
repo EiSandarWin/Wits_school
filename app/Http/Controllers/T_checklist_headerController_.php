@@ -18,6 +18,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 
 
+
 class T_checklist_headerController extends Controller
 {
 
@@ -44,18 +45,11 @@ class T_checklist_headerController extends Controller
         return view('transaction.create',compact('template_details','branches','templates'));
     }
 
-    public function createstaff()
-    {
-        $templates = M_templates::all();
-        $template_details = M_template_details::all();
-        $branches = M_branch::all();
-
-        return view('transaction.createtwo',compact('templates','template_details'.'branches'));
-    }
-
-
     public function store(Request $request)
     {
+
+
+
         $folderPath = public_path('parentupload/' );
 
         $image_parts = explode(";base64,", $request->signature);
@@ -72,33 +66,7 @@ class T_checklist_headerController extends Controller
 
         file_put_contents($file, $image_base64);
 
-        request()->validate([
-            'template_id' =>'required',
-            'student_name' => 'required',
-            'student_name_kana' => 'required',
-            'parent_name' => 'required',
-        ]);
 
-        $requestData = $request->all();
-        $check_template_details = $request->input("checkbox");
-        $requestData['signature'] = $signature;
-
-
-        $check_list_header = T_checklist_header::create($requestData);
-        $checklist_detail = array();
-        foreach ( $check_template_details as $value){
-// Code Here
-            $checklist_detail[] = array('checklist_id'=>$check_list_header->id,
-                'm_template_id'=>$check_list_header->template_id,'m_template_details_id'=>$value, 'checkflag'=>1);
-        }
-        T_checklist_details::insert($checklist_detail);
-
-        return redirect()->route('transaction.createtwo');
-
-    }
-
-    public function storetwo(Request $request)
-    {
 
         $folderPath1 = public_path('staffupload/' );
 
@@ -115,22 +83,57 @@ class T_checklist_headerController extends Controller
         $file1 = $folderPath1 . $signature1;
 
         file_put_contents($file1, $image1_base64);
-
+        //$dt = new DateTime;
+        //$now -> updated_at = $dt->format('Y-m-d H:i'); //Fomat Date and time
+        //$now = $request->check_data;
 
         request()->validate([
-
+            'template_id' =>'required',
             'branch_id' => 'required',
             'user_name' => 'required',
+            'student_name' => 'required',
+            'student_name_kana' => 'required',
+            'parent_name' => 'required',
+
+
+
         ]);
 
-
-
+        $requestData = $request->all();
+        $check_template_details = $request->input("checkbox");
+        $requestData['signature'] = $signature;
         $requestData['signature_staff'] = $signature1;
+        //$requestData['check_date'] = $now;
 
+
+
+
+
+
+
+
+
+//
+//        $t_checklist_details = new t_checklist_details();
+//        $t_checklist_details->m_template_details_id = $request->merge([
+//            'm_template_details_id' =>implode(',',(array)$request->get('checkflag')) []);
+//        $t_checklist_details->checklist_id = $t_checklist->checklist_id;
+//        $t_checklist_details->checkflag = $request->merge([
+//            'checkflag' =>implode(',',(array)$request->get('checkflag'))
+//        ]);
+
+
+        $check_list_header = T_checklist_header::create($requestData);
+        $checklist_detail = array();
+        foreach ( $check_template_details  as $value){
+// Code Here
+            $checklist_detail[] = array('checklist_id'=>$check_list_header->id,
+                'm_template_id'=>$check_list_header->template_id,'m_template_details_id'=>$value, 'checkflag'=>1);
+        }
+        T_checklist_details::insert($checklist_detail);
 
         return redirect()->route('transaction.create')
-            ->with('success','Student Data successfully Save.');
-
+                        ->with('success','Student Data successfully Save.');
     }
 
 
@@ -142,29 +145,22 @@ class T_checklist_headerController extends Controller
     }
 
 
-     public function searchlist(T_checklist_header $id){
+    public function searchlist(T_checklist_header $id){
         $searchdata = T_checklist_header::find($id);
         $branches = M_branch::all();
         return view('/home',compact('searchdata','branches'));
     }
 
-
     public function search(Request $request){
-
-          $branches = M_branch::all();
+        $branches = M_branch::all();
 
         $search = $request->search;
         $searchselect = $request->searchselect;
-        // $searchdata = T_checklist_header::all();
+        // $t_checklist_header = T_checklist_header::all();
+        $searchdata = T_checklist_header::all();
 
-        if (empty($request->all())) {
 
-           return view('/home',compact('branches'));
-
-        } else if (is_null($request->search) && is_null($request->searchselect)) {
-
-            $searchdata = T_checklist_header::all();
-
+        if(is_null($request->search) ){
             return view('/home',compact('searchdata','branches'));
         }
 
@@ -173,6 +169,7 @@ class T_checklist_headerController extends Controller
                 $searchdata = T_checklist_header::where('student_name_kana', 'LIKE', '%' . $search . '%')
                     ->orwhere('student_name', 'LIKE', '%' . $search . '%')
                     ->orwhere('parent_name', 'LIKE', '%' . $search . '%')
+                    ->orwhere('user_name', 'LIKE', '%'.$search.'%')
                     ->get();
             }
 
@@ -184,27 +181,28 @@ class T_checklist_headerController extends Controller
             }
 
             if (!is_null($request->search) && !is_null($request->searchselect)) {
-               $searchdata = T_checklist_header::where(function ($query) use ($search) {
-                $query->orWhere('student_name','LIKE','%'.$search.'%')
-                    ->orWhere('parent_name', 'LIKE','%'.$search.'%')
-                    ->orWhere('student_name_kana', 'LIKE','%'.$search.'%');
-            })->where(function($query) use ($searchselect) {
-                $query->where('branch_id' ,$searchselect);
+                $searchdata = T_checklist_header::where(function ($query) use ($search) {
+                    $query->orWhere('student_name','LIKE','%'.$search.'%')
+                        ->orWhere('parent_name', 'LIKE','%'.$search.'%')
+                        ->orWhere('student_name_kana', 'LIKE','%'.$search.'%')
+                        ->orwhere('user_name', 'LIKE', '%'.$search.'%');
+                })->where(function($query) use ($searchselect) {
+                    $query->where('branch_id' ,$searchselect);
 
-            })->get();
+                })->get();
 
             }
 
         }
-        //dd($searchdata);
 
+        //dd($searchdata);
 
         return view('/home',compact('searchdata','branches'));
 
 
     }
 
-     public function checklistExport(Request $request)
+    public function checklistExport(Request $request)
     {
 
 
@@ -248,19 +246,19 @@ class T_checklist_headerController extends Controller
 
             }
 
-             $report = $searchdata->orderBy('student_name', 'desc')->get();
+            $report = $searchdata->orderBy('student_name', 'desc')->get();
         }
 
-            foreach ($report as $key => $list) {
-                $array[] = [
-                    'No' => $key + 1,
-                    'Name' => $list->student_name,
-                    'Name(カナ)' => $list->student_name_kana,
-                    'Parent Name' => $list->parent_name,
-                    'Staff Name' => $list->user_name,
-                    'Branch Name' => $list->branch->name,
-                ];
-            }
+        foreach ($report as $key => $list) {
+            $array[] = [
+                'No' => $key + 1,
+                'Name' => $list->student_name,
+                'Name(カナ)' => $list->student_name_kana,
+                'Parent Name' => $list->parent_name,
+                'Staff Name' => $list->user_name,
+                'Branch Name' => $list->branch->name,
+            ];
+        }
 
 
 
@@ -269,13 +267,14 @@ class T_checklist_headerController extends Controller
         // dd($report);
 
         $export = new StudentlistExport($array,$search,$searchselect,$rows);
-        $name = urlencode(date("Y-m-d").".xlsx");
-         //$name = 'report.xlsx';
+        //$name = "studentlist".time()."xls";
+        $name = 'report.xlsx';
         // dd($export);
         return Excel::download($export, $name);
 
 
     }
+
 
     public function show( $id)
     {

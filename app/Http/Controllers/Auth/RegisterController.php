@@ -55,15 +55,15 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $branches = M_branch::all();
+        //$branches = M_branch::all();
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'name_kana' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'branch_id' => ['required', 'string'],
-        ])
-        ->with(compact('branches'));
+        ]);
+        //->with(compact('branches'));
     }
 
     /**
@@ -76,15 +76,15 @@ class RegisterController extends Controller
     {
 
 
-        $branches = M_branch::all();
+        //$branches = M_branch::all();
         return User::create([
             'name' => $data['name'],
             'name_kana' => $data['name_kana'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'branch_id' => $data['branch_id'],
-        ])
-        ->with(compact('branches'));
+        ]);
+        //->with(compact('branches'));
 
     }
 

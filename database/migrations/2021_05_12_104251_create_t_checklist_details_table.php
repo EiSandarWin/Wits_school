@@ -19,7 +19,7 @@ class CreateTChecklistDetailsTable extends Migration
             $table->BigInteger('checklist_id')->unsigned();
             $table->BigInteger('m_template_id')->unsigned();
             $table->BigInteger('m_template_details_id')->unsigned();
-            $table->tinyInteger('checkflag');
+
 
             $table->foreign('checklist_id')->references('id')->on('t_checklist_header')->onDelete('cascade');
             $table->foreign('m_template_details_id')->references('id')->on('m_template_details')->onDelete('cascade');
